@@ -7,38 +7,32 @@ public class FractionImpl implements Fraction {
 
     public FractionImpl(int numerator, int denominator) {
 
-        if(denominator == 0){
+        if (denominator == 0) {
             throw new ArithmeticException("The denominator can't be zero");
         }
-
         initialiseAttributes(numerator, denominator);
-
     }
 
     public FractionImpl(int wholeNumber) {
-        this.numerator = wholeNumber;
-        this.denominator = 1;
+        int denominator = 1;
+        initialiseAttributes(wholeNumber, denominator);
     }
 
     public FractionImpl(String fraction) {
         String cleanedFractionStr = fraction.replaceAll("\\s", "");
         boolean isFullFraction = fraction.contains("/");
-        if(isFullFraction){
+        if (isFullFraction) {
             String[] parts = cleanedFractionStr.split("/");
             int numerator = Integer.parseInt(parts[0]);
             int denominator = Integer.parseInt(parts[1]);
 
-            if(denominator == 0){
+            if (denominator == 0) {
                 throw new ArithmeticException("The denominator can't be zero");
             }
-
             initialiseAttributes(numerator, denominator);
-        }
-
-        else {
+        } else {
             int numerator = Integer.parseInt(cleanedFractionStr);
             int denominator = 1;
-
             initialiseAttributes(numerator, denominator);
         }
     }
@@ -116,13 +110,6 @@ public class FractionImpl implements Fraction {
         return null;
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
 
     /**
      * @inheritDoc
@@ -132,13 +119,6 @@ public class FractionImpl implements Fraction {
         return super.equals(obj);
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
 
     /**
      * @inheritDoc
@@ -162,5 +142,21 @@ public class FractionImpl implements Fraction {
     @Override
     public String toString() {
         return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
