@@ -41,19 +41,33 @@ public class FractionImpl implements Fraction {
         this.denominator = 1;
     }
 
-    /**
-     * The parameter is a <pre>String</pre> containing either a whole number, such as `5` or `-3`, or a fraction,
-     * such as "8/-12".
-     * Allow blanks around (but not within) integers.
-     * The constructor should throw an <pre>ArithmeticException</pre>
-     * if given a string representing a fraction whose denominator is zero.
-     * <p>
-     * You may find it helpful to look at the available String API methods in the Java API.
-     *
-     * @param fraction the string representation of the fraction
-     */
     public FractionImpl(String fraction) {
-        // TODO
+        String cleanedFractionStr = fraction.replaceAll("\\s", "");
+        boolean isFullFraction = fraction.contains("/");
+        if(isFullFraction){
+            String[] parts = cleanedFractionStr.split("/");
+            int numerator = Integer.parseInt(parts[0]);
+            int denominator = Integer.parseInt(parts[1]);
+
+            if(denominator == 0){
+                throw new ArithmeticException("The denominator can't be zero");
+            }
+
+            int gcf = getGreatestCommonFactor(Math.abs(numerator), Math.abs(denominator));
+            boolean shouldFlipSign = denominator < 0;
+            this.numerator = normalise(numerator, gcf, shouldFlipSign);
+            this.denominator = normalise(denominator, gcf, shouldFlipSign);
+        }
+
+        else {
+            int numerator = Integer.parseInt(cleanedFractionStr);
+            int denominator = 1;
+
+            int gcf = getGreatestCommonFactor(Math.abs(numerator), Math.abs(denominator));
+            boolean shouldFlipSign = denominator < 0;
+            this.numerator = normalise(numerator, gcf, shouldFlipSign);
+            this.denominator = normalise(denominator, gcf, shouldFlipSign);
+        }
     }
 
     /**
