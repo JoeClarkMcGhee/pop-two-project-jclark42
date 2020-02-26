@@ -1,19 +1,39 @@
 package fraction;
 
 public class FractionImpl implements Fraction {
-    /**
-     * Parameters are the <em>numerator</em> and the <em>denominator</em>.
-     * Normalize the fraction as you create it.
-     * For instance, if the parameters are <pre>(8, -12)</pre>, create a <pre>Fraction</pre> with numerator
-     * <pre>-2</pre> and denominator <pre>3</pre>.
-     *
-     * The constructor should throw an <pre>ArithmeticException</pre> if the denominator is zero.
-     *
-     * @param numerator
-     * @param denominator
-     */
+
+    private int numerator;
+    private int denominator;
+
     public FractionImpl(int numerator, int denominator) {
-        // TODO
+
+        if(denominator == 0){
+            throw new ArithmeticException("The denominator can't be zero");
+        }
+
+        int gcf = getGreatestCommonFactor(Math.abs(numerator), Math.abs(denominator));
+        boolean shouldFlipSign = denominator < 0;
+        this.numerator = normalise(numerator, gcf, shouldFlipSign);
+        this.denominator = normalise(denominator, gcf, shouldFlipSign);
+
+    }
+
+    private int getGreatestCommonFactor(int numerator, int denominator) {
+        int gcd = 1;
+        for (int i = 1; i <= numerator && i <= denominator; i++) {
+            if (numerator % i == 0 && denominator % i == 0) {
+                gcd = i;
+            }
+        }
+        return gcd;
+    }
+
+    private int normalise(int num, int gcf, boolean shouldFlipSign) {
+        int numToReturn = num;
+        if (shouldFlipSign) {
+            numToReturn = num * -1;
+        }
+        return numToReturn / gcf;
     }
 
     /**
