@@ -11,10 +11,7 @@ public class FractionImpl implements Fraction {
             throw new ArithmeticException("The denominator can't be zero");
         }
 
-        int gcf = getGreatestCommonFactor(Math.abs(numerator), Math.abs(denominator));
-        boolean shouldFlipSign = denominator < 0;
-        this.numerator = normalise(numerator, gcf, shouldFlipSign);
-        this.denominator = normalise(denominator, gcf, shouldFlipSign);
+        initialiseAttributes(numerator, denominator);
 
     }
 
@@ -53,21 +50,22 @@ public class FractionImpl implements Fraction {
                 throw new ArithmeticException("The denominator can't be zero");
             }
 
-            int gcf = getGreatestCommonFactor(Math.abs(numerator), Math.abs(denominator));
-            boolean shouldFlipSign = denominator < 0;
-            this.numerator = normalise(numerator, gcf, shouldFlipSign);
-            this.denominator = normalise(denominator, gcf, shouldFlipSign);
+            initialiseAttributes(numerator, denominator);
         }
 
         else {
             int numerator = Integer.parseInt(cleanedFractionStr);
             int denominator = 1;
 
-            int gcf = getGreatestCommonFactor(Math.abs(numerator), Math.abs(denominator));
-            boolean shouldFlipSign = denominator < 0;
-            this.numerator = normalise(numerator, gcf, shouldFlipSign);
-            this.denominator = normalise(denominator, gcf, shouldFlipSign);
+            initialiseAttributes(numerator, denominator);
         }
+    }
+
+    private void initialiseAttributes(int numerator, int denominator) {
+        int gcf = getGreatestCommonFactor(Math.abs(numerator), Math.abs(denominator));
+        boolean shouldFlipSign = denominator < 0;
+        this.numerator = normalise(numerator, gcf, shouldFlipSign);
+        this.denominator = normalise(denominator, gcf, shouldFlipSign);
     }
 
     /**
