@@ -36,13 +36,9 @@ public class FractionImpl implements Fraction {
         return numToReturn / gcf;
     }
 
-    /**
-     * The parameter is the numerator and <pre>1</pre> is the implicit denominator.
-     *
-     * @param wholeNumber representing the numerator
-     */
     public FractionImpl(int wholeNumber) {
-        // TODO
+        this.numerator = wholeNumber;
+        this.denominator = 1;
     }
 
     /**
