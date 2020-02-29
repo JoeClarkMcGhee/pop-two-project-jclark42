@@ -2,20 +2,22 @@ package fraction;
 
 public class FractionImpl implements Fraction {
 
-    private int numerator;
-    private int denominator;
+    private final int numerator;
+    private final int denominator;
 
     public FractionImpl(int numerator, int denominator) {
 
         if (denominator == 0) {
             throw new ArithmeticException("The denominator can't be zero");
         }
-        initialiseAttributes(numerator, denominator);
+        this.numerator = calculateAttribute(numerator, denominator, true);
+        this.denominator = calculateAttribute(numerator, denominator, false);
     }
 
     public FractionImpl(int wholeNumber) {
         int denominator = 1;
-        initialiseAttributes(wholeNumber, denominator);
+        this.numerator = calculateAttribute(wholeNumber, denominator, true);
+        this.denominator = calculateAttribute(numerator, denominator, false);
     }
 
     public FractionImpl(String fraction) {
@@ -29,22 +31,28 @@ public class FractionImpl implements Fraction {
             if (denominator == 0) {
                 throw new ArithmeticException("The denominator can't be zero");
             }
-            initialiseAttributes(numerator, denominator);
+            this.numerator = calculateAttribute(numerator, denominator, true);
+            this.denominator = calculateAttribute(numerator, denominator, false);
         } else {
             int numerator = Integer.parseInt(cleanedFractionStr);
             int denominator = 1;
-            initialiseAttributes(numerator, denominator);
+            this.numerator = calculateAttribute(numerator, denominator, true);
+            this.denominator = calculateAttribute(numerator, denominator, false);
         }
     }
 
-    private void initialiseAttributes(int numerator, int denominator) {
+    private int calculateAttribute(int numerator, int denominator, boolean is_numerator) {
         int gcf = getGreatestCommonFactor(Math.abs(numerator), Math.abs(denominator));
         boolean shouldFlipSign = denominator < 0;
-        this.numerator = normalise(numerator, gcf, shouldFlipSign);
-        this.denominator = normalise(denominator, gcf, shouldFlipSign);
+        if (is_numerator){
+            return normalise(numerator, gcf, shouldFlipSign);
+        }
+        else {
+            return normalise(denominator, gcf, shouldFlipSign);
+        }
     }
 
-    private int getGreatestCommonFactor(int numerator, int denominator) {
+    public static int getGreatestCommonFactor(int numerator, int denominator) {
         int gcd = 1;
         for (int i = 1; i <= numerator && i <= denominator; i++) {
             if (numerator % i == 0 && denominator % i == 0) {
@@ -54,7 +62,7 @@ public class FractionImpl implements Fraction {
         return gcd;
     }
 
-    private int normalise(int num, int gcf, boolean shouldFlipSign) {
+    public static int normalise(int num, int gcf, boolean shouldFlipSign) {
         int numToReturn = num;
         if (shouldFlipSign) {
             numToReturn = num * -1;
@@ -67,7 +75,11 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public Fraction add(Fraction f) {
-        return null;
+        int a = this.numerator, b = this.denominator;
+        int c = ((FractionImpl) f).numerator, d = ((FractionImpl) f).denominator;
+
+        int numerator = (a * d + b * c), denominator = b * d;
+        return new FractionImpl(numerator, denominator);
     }
 
     /**
@@ -75,7 +87,11 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public Fraction subtract(Fraction f) {
-        return null;
+        int a = this.numerator, b = this.denominator;
+        int c = ((FractionImpl) f).numerator, d = ((FractionImpl) f).denominator;
+
+        int numerator = (a * d - b * c), denominator = b * d;
+        return new FractionImpl(numerator, denominator);
     }
 
     /**
@@ -83,7 +99,11 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public Fraction multiply(Fraction f) {
-        return null;
+        int a = this.numerator, b = this.denominator;
+        int c = ((FractionImpl) f).numerator, d = ((FractionImpl) f).denominator;
+
+        int numerator = a * c, denominator = b * d;
+        return new FractionImpl(numerator, denominator);
     }
 
     /**
@@ -91,7 +111,11 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public Fraction divide(Fraction f) {
-        return null;
+        int a = this.numerator, b = this.denominator;
+        int c = ((FractionImpl) f).numerator, d = ((FractionImpl) f).denominator;
+
+        int numerator = a * d, denominator = b * c;
+        return new FractionImpl(numerator, denominator);
     }
 
     /**
@@ -99,7 +123,8 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public Fraction abs() {
-        return null;
+        int numerator = Math.abs(this.numerator), denominator = Math.abs(this.denominator);
+        return new FractionImpl(numerator, denominator);
     }
 
     /**
@@ -107,7 +132,8 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public Fraction negate() {
-        return null;
+        int numerator = this.numerator * -1, denominator = this.denominator;
+        return new FractionImpl(numerator, denominator);
     }
 
 
@@ -116,7 +142,12 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (obj instanceof  FractionImpl) {
+            return this.numerator == ((FractionImpl) obj).numerator &&
+                    this.denominator == ((FractionImpl) obj).denominator;
+        } else {
+            return false;
+        }
     }
 
 
@@ -125,7 +156,7 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public Fraction inverse() {
-        return null;
+        return new FractionImpl(this.denominator, this.numerator);
     }
 
     /**
@@ -133,7 +164,9 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public int compareTo(Fraction o) {
-        return 0;
+        float thisValue = (float) this.numerator / this.denominator;
+        float objectValue = (float) ((FractionImpl) o).numerator / ((FractionImpl) o).denominator;
+        return Float.compare(objectValue, thisValue);
     }
 
     /**
@@ -141,7 +174,13 @@ public class FractionImpl implements Fraction {
      */
     @Override
     public String toString() {
-        return null;
+        if (this.numerator == 0 ) {return "0/1";}
+        if (this.denominator == 1) {
+            return String.valueOf(this.numerator);
+        }
+        else {
+            return this.numerator + "/" + this.denominator;
+        }
     }
 
     /**
