@@ -90,7 +90,7 @@ public class FractionImpl implements Fraction {
      * @param denominator as stated, a denominator.
      * @return the gcf
      */
-    public static int getGreatestCommonFactor(int numerator, int denominator) {
+    private static int getGreatestCommonFactor(int numerator, int denominator) {
         int gcd = 1;
         for (int i = 1; i <= numerator && i <= denominator; i++) {
             if (numerator % i == 0 && denominator % i == 0) {
@@ -108,7 +108,7 @@ public class FractionImpl implements Fraction {
      * @param shouldFlipSign a boolean indicating if the sign in the num should be flipped.
      * @return The number divided by the gcf. The greatest common divisor of this number will be 1.
      */
-    public static int normalise(int num, int gcf, boolean shouldFlipSign) {
+    private static int normalise(int num, int gcf, boolean shouldFlipSign) {
         int numToReturn = num;
         if (shouldFlipSign) {
             numToReturn = num * -1;

@@ -38,27 +38,6 @@ class FractionImplTest {
     }
 
     @Test
-    void testGCf() {
-        int gcf = FractionImpl.getGreatestCommonFactor(10, 5);
-        assertEquals(gcf, 5);
-
-        int gcf2 = FractionImpl.getGreatestCommonFactor(1, 2);
-        assertEquals(gcf2, 1);
-
-        int gcf3 = FractionImpl.getGreatestCommonFactor(10, 20);
-        assertEquals(gcf3, 10);
-    }
-
-    @Test
-    void testNormalise() {
-        int normalisedInt = FractionImpl.normalise(10, 5, false);
-        assertEquals(normalisedInt, 2);
-
-        int normalisedInt2 = FractionImpl.normalise(-10, 5, true);
-        assertEquals(normalisedInt2, 2);
-    }
-
-    @Test
     void add() {
         Fraction additionResult = testFraction.add(testFraction2);
         String result = additionResult.toString();
