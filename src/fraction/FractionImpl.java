@@ -42,26 +42,42 @@ public class FractionImpl implements Fraction {
     public FractionImpl(String fraction) {
         // Remove all the empty spaces from the string
         String cleanedFractionStr = fraction.replaceAll("\\s", "");
+        // Test for valid string input
+        testEmptyString(cleanedFractionStr);
         // The fraction is a "full" fraction if it contains the numerator and the denominator.
         boolean isFullFraction = fraction.contains("/");
-        if (isFullFraction) {
-            // Split the sting up into the numerator and denominator
-            String[] parts = cleanedFractionStr.split("/");
-            int numerator = Integer.parseInt(parts[0]);
-            int denominator = Integer.parseInt(parts[1]);
-
-            if (denominator == 0) {
-                throw new ArithmeticException("The denominator can't be zero");
+        try {
+            if (isFullFraction) {
+                // Split the sting up into the numerator and denominator
+                String[] parts = cleanedFractionStr.split("/");
+                int numerator = Integer.parseInt(parts[0]);
+                int denominator = Integer.parseInt(parts[1]);
+                if (denominator == 0) {
+                    throw new ArithmeticException();
+                }
+                // Initialise variables
+                this.numerator = calculateAttribute(numerator, denominator, true);
+                this.denominator = calculateAttribute(numerator, denominator, false);
+            } else {
+                int numerator = Integer.parseInt(cleanedFractionStr);
+                int denominator = 1;
+                // Initialise variables
+                this.numerator = calculateAttribute(numerator, denominator, true);
+                this.denominator = calculateAttribute(numerator, denominator, false);
             }
-            // Initialise variables
-            this.numerator = calculateAttribute(numerator, denominator, true);
-            this.denominator = calculateAttribute(numerator, denominator, false);
-        } else {
-            int numerator = Integer.parseInt(cleanedFractionStr);
-            int denominator = 1;
-            // Initialise variables
-            this.numerator = calculateAttribute(numerator, denominator, true);
-            this.denominator = calculateAttribute(numerator, denominator, false);
+        }
+        catch (Exception e){
+            throw new InvalidInputException("Invalid string input passed to the constructor");
+        }
+    }
+
+    /**
+     * Raise an exception if invalid string input is provided to the constructor.
+     * @param str input string passed to the constructor.
+     */
+    private void testEmptyString(String str){
+        if (str.isEmpty()){
+            throw new InvalidInputException("Invalid string input passed to the constructor");
         }
     }
 

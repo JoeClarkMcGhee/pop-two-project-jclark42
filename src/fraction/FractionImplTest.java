@@ -1,5 +1,6 @@
 package fraction;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -133,5 +134,36 @@ class FractionImplTest {
         Fraction zeroFraction = new FractionImpl(0, 1);
         String result2 = zeroFraction.toString();
         assertEquals(result2, "0/1");
+    }
+
+    @Test
+    void testInvalidDenominator() {
+        Assertions.assertThrows(ArithmeticException.class, () -> new FractionImpl(1, 0));
+    }
+
+    @Test
+    void testEmptyString() {
+        Assertions.assertThrows(InvalidInputException.class, () -> new FractionImpl(""));
+    }
+
+    @Test
+    void testInvalidString1() {
+        Assertions.assertThrows(InvalidInputException.class, () -> new FractionImpl("1/0"));
+    }
+
+
+    @Test
+    void testInvalidString2() {
+        Assertions.assertThrows(InvalidInputException.class, () -> new FractionImpl("?"));
+    }
+
+    @Test
+    void testInvalidString3() {
+        Assertions.assertThrows(InvalidInputException.class, () -> new FractionImpl("e/1"));
+    }
+
+    @Test
+    void testInvalidString4() {
+        Assertions.assertThrows(InvalidInputException.class, () -> new FractionImpl("1/e"));
     }
 }
